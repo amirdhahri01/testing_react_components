@@ -69,6 +69,8 @@ describe("Login Component Tests" , () => {
         fireEvent.change(userNameInput , {target : {value : "someUser"}})
         fireEvent.change(passwordInput , {target : {value : "somePassword"}})
         fireEvent.click(loginButton)
+        const resultLabel = screen.getByTestId("resultLabel")
+        expect(resultLabel.textContent).toBe("successful login")
     })
     
 })
