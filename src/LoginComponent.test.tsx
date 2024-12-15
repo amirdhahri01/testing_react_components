@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import LoginComponent from "./LoginComponent"
 
 
@@ -7,12 +7,19 @@ describe("Login Component Tests" , () => {
         login : jest.fn()
     }
     const setTokenMock = jest.fn()
-    it("Should render correctly the login component" , () => {
-        const container = render(<LoginComponent 
+    let container : HTMLElement;
+    function setup(){
+        container = render(<LoginComponent 
             loginService={loginServiceMock} 
             setToken={setTokenMock}
             />).container
-        console.log(container.textContent);
-            
+    }
+    beforeEach(() => {
+        setup();
+    })
+    it("Should render correctly the login component" , () => {
+        const mainElement = screen.getByRole("main")
+        expect(mainElement).toBeInTheDocument()
+        expect(screen.queryByTestId("resultLabel")).not.toBeInTheDocument()
     })
 })
