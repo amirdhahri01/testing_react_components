@@ -59,5 +59,16 @@ describe("Login Component Tests" , () => {
         const resultLabel = screen.getByTestId("resultLabel")
         expect(resultLabel.textContent).toBe("UserName and password required!")
     })
+
+    it("right credentials - successful login" , () => {
+        loginServiceMock.login.mockResolvedValueOnce("1234")
+        const inputs = container.querySelectorAll("input")
+        const userNameInput = inputs[0];
+        const passwordInput = inputs[1];
+        const loginButton = inputs[2];
+        fireEvent.change(userNameInput , {target : {value : "someUser"}})
+        fireEvent.change(passwordInput , {target : {value : "somePassword"}})
+        fireEvent.click(loginButton)
+    })
     
 })
