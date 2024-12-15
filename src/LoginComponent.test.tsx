@@ -30,4 +30,11 @@ describe("Login Component Tests" , () => {
         expect(inputs[2].getAttribute("value")).toBe("Login")
     })
 
+    it("Should render correctly - query by document" , () => {
+        const inputs = container.querySelectorAll("input")
+        expect(inputs).toHaveLength(3)
+        expect(inputs[0].getAttribute("value")).toBe("")
+        expect(inputs[1].getAttribute("value")).toBe("")
+        expect(inputs[2].getAttribute("value")).toBe("Login")
+    })
 })
