@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import LoginComponent from "./LoginComponent"
+import user from "@testing-library/user-event"
 
 
 describe("Login Component Tests" , () => {
@@ -36,5 +37,13 @@ describe("Login Component Tests" , () => {
         expect(inputs[0].getAttribute("value")).toBe("")
         expect(inputs[1].getAttribute("value")).toBe("")
         expect(inputs[2].getAttribute("value")).toBe("Login")
+    })
+    it("Click login button with incomplete credentials - show required message" , () => {
+        const inputs = screen.getAllByTestId('input')
+        const loginButton = inputs[2];
+        fireEvent.click(loginButton)
+        user.click(loginButton)
+        const resultLabel = screen.getByTestId("resultLabel")
+        expect(resultLabel.textContent).toBe("UserName and password required!")
     })
 })
