@@ -1,8 +1,4 @@
 
-
-
-
-
 export default class LoginService {
 
     public async login(userName: string, password: string): Promise<string | undefined> {
