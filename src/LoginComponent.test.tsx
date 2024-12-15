@@ -50,27 +50,48 @@ describe("Login Component Tests" , () => {
         expect(resultLabel.textContent).toBe("UserName and password required!")
     })
 
-    it("Click login button with incomplete credentials - show required message" , () => {
-        const inputs = screen.getAllByTestId('input')
-        const loginButton = inputs[2];
-        act(() => {
-            user.click(loginButton)
-        })
-        const resultLabel = screen.getByTestId("resultLabel")
-        expect(resultLabel.textContent).toBe("UserName and password required!")
-    })
+    // it("Click login button with incomplete credentials - show required message" , () => {
+    //     const inputs = screen.getAllByTestId('input')
+    //     const loginButton = inputs[2];
+    //     act(() => {
+    //         user.click(loginButton)
+    //     })
+    //     const resultLabel = screen.getByTestId("resultLabel")
+    //     expect(resultLabel.textContent).toBe("UserName and password required!")
+    // })
 
-    it("right credentials - successful login" , () => {
+    it("right credentials - successful login" , async () => {
         loginServiceMock.login.mockResolvedValueOnce("1234")
         const inputs = container.querySelectorAll("input")
         const userNameInput = inputs[0];
         const passwordInput = inputs[1];
         const loginButton = inputs[2];
-        fireEvent.change(userNameInput , {target : {value : "someUser"}})
-        fireEvent.change(passwordInput , {target : {value : "somePassword"}})
+        fireEvent.change(userNameInput , {target : {value : "user"}})
+        fireEvent.change(passwordInput , {target : {value : "pass"}})
         fireEvent.click(loginButton)
-        const resultLabel = screen.getByTestId("resultLabel")
+        expect(loginServiceMock.login).toHaveBeenCalledWith("user" , "pass")
+        const resultLabel = await screen.findByTestId("resultLabel")
         expect(resultLabel.textContent).toBe("successful login")
     })
     
+    it("right credentials - successful login - with user calls" , async () => {
+        loginServiceMock.login.mockResolvedValueOnce("1234")
+        const inputs = container.querySelectorAll("input")
+        const userNameInput = inputs[0];
+        const passwordInput = inputs[1];
+        const loginButton = inputs[2];
+        act(() => {
+            user.click(userNameInput)
+            user.keyboard("user")
+
+            user.click(passwordInput)
+            user.keyboard("pass")
+
+            user.click(loginButton)
+        })
+        expect(loginServiceMock.login).toHaveBeenCalledWith("user" , "pass")
+        const resultLabel = await screen.findByTestId("resultLabel")
+        expect(resultLabel.textContent).toBe("successful login")
+    })
+
 })
